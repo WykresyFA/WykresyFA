@@ -36,7 +36,7 @@
     }
 
     .login-container img.logo {
-      width: 140px; /* zwiększona wielkość */
+      width: 140px;
       margin-bottom: 20px;
     }
 
@@ -103,39 +103,47 @@
   <footer>ProjectRPG - Federal Bureau of Investigation &copy; 2025</footer>
 
   <script>
-    let correctPassword = null;
-
-    const SHEET_ID = '1TxcOVV8AUFIA5wGrPD-19iKz0r-0fIroFF5OSTlvv1Q'; // <- wklej swoje ID arkusza
+    const SHEET_ID = '1TxcOVV8AUFIA5wGrPD-19iKz0r-0fIroFF5OSTlvv1Q'; // <-- Twój arkusz
     const SHEET_NAME = 'haslo';
+    let passwordHashFromSheet = null;
 
-    async function fetchPassword() {
+    async function getPasswordFromSheet() {
       const url = `https://docs.google.com/spreadsheets/d/${SHEET_ID}/gviz/tq?tqx=out:json&sheet=${SHEET_NAME}`;
       try {
         const response = await fetch(url);
         const text = await response.text();
         const json = JSON.parse(text.substring(text.indexOf('{'), text.lastIndexOf('}') + 1));
-        const row = json.table.rows[0];
-        correctPassword = row.c[0].v;
-        console.log('Pobrane hasło:', correctPassword);
-      } catch (err) {
-        document.getElementById('errorMsg').textContent = 'Błąd połączenia z arkuszem.';
-        console.error(err);
+        const value = json.table.rows[0].c[0].v;
+        passwordHashFromSheet = value.trim();
+        console.log('Pobrany hash:', passwordHashFromSheet);
+      } catch (error) {
+        document.getElementById('errorMsg').textContent = 'Błąd ładowania hasła z arkusza.';
+        console.error('Błąd:', error);
       }
     }
 
-    fetchPassword();
+    async function hash(text) {
+      const encoder = new TextEncoder();
+      const data = encoder.encode(text);
+      const hashBuffer = await crypto.subtle.digest('SHA-256', data);
+      const hashArray = Array.from(new Uint8Array(hashBuffer));
+      return hashArray.map(b => b.toString(16).padStart(2, '0')).join('');
+    }
 
-    function checkPassword() {
+    async function checkPassword() {
       const entered = document.getElementById('password').value;
       const errorDiv = document.getElementById('errorMsg');
 
-      if (correctPassword === null) {
-        errorDiv.textContent = 'Poczekaj, trwa ładowanie hasła...';
+      if (!passwordHashFromSheet) {
+        errorDiv.textContent = 'Trwa ładowanie danych...';
         return;
       }
 
-      if (entered === correctPassword) {
-        window.location.href = 'menubolo.html';
+      const enteredHash = await hash(entered);
+
+      if (enteredHash === passwordHashFromSheet) {
+        const nextPage = atob('bWVudWJvbG8uaHRtbA=='); // menubolo.html
+        window.location.href = nextPage;
       } else {
         errorDiv.textContent = 'Nieprawidłowe hasło.';
       }
@@ -146,6 +154,8 @@
         checkPassword();
       }
     });
+
+    getPasswordFromSheet();
   </script>
 
 </body>
