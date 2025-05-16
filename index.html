@@ -2,234 +2,121 @@
 <html lang="pl">
 <head>
   <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-  <title>Portiernia - FA</title>
-  <link rel="icon" href="falogo.png" type="image/x-icon">
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Logowanie</title>
   <style>
-    * {
-      margin: 0;
-      padding: 0;
-      box-sizing: border-box;
-      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-    }
-
-    html, body {
-      height: 100%;
-    }
-
     body {
+      background: #f4f6f8;
+      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
       display: flex;
-      flex-direction: column;
-      background-color: #f4f6f8;
-      color: #1a202c;
-    }
-
-    .navbar {
-      display: flex;
-      justify-content: space-between;
+      justify-content: center;
       align-items: center;
-      background-color: #1f2937;
-      color: white;
-      padding: 15px 30px;
+      height: 100vh;
+      margin: 0;
     }
-
-    .navbar .logo {
-      display: flex;
-      align-items: center;
-    }
-
-    .navbar .logo img {
-      height: 50px;
-    }
-
-    .navbar .nav-links a {
-      margin-left: 20px;
-      color: white;
-      text-decoration: none;
-      font-weight: 500;
-      transition: color 0.3s;
-    }
-
-    .navbar .nav-links a:hover {
-      color: #60a5fa;
-    }
-
-    .hero {
-      text-align: center;
-      padding: 80px 20px 40px;
-      background-color: #e2e8f0;
-    }
-
-    .hero h1 {
-      font-size: 2.5rem;
-      margin-bottom: 20px;
-    }
-
-    .hero p {
-      font-size: 1.2rem;
-      color: #4a5568;
-      max-width: 600px;
-      margin: 0 auto 30px;
-    }
-
-    .hero .buttons a {
-      margin: 10px;
-      padding: 12px 24px;
-      background-color: #3182ce;
-      color: white;
-      border-radius: 8px;
-      text-decoration: none;
-      font-weight: 600;
-      transition: background-color 0.3s;
-      cursor: pointer;
-    }
-
-    .hero .buttons a:hover {
-      background-color: #2563eb;
-    }
-
-    .info {
-      max-width: 1000px;
-      margin: 60px auto;
-      padding: 20px;
-      background-color: white;
+    .login-container {
+      background: white;
+      padding: 30px 40px;
       border-radius: 12px;
-      box-shadow: 0 4px 12px rgba(0,0,0,0.05);
-      flex-grow: 1;
-    }
-
-    .info h2 {
-      margin-bottom: 15px;
-      color: #2d3748;
-    }
-
-    .info p {
-      color: #4a5568;
-      line-height: 1.6;
-    }
-
-    footer {
+      box-shadow: 0 8px 20px rgba(0,0,0,0.1);
       text-align: center;
-      padding: 20px;
-      background-color: #1f2937;
-      color: white;
-      margin-top: auto;
+      width: 320px;
     }
-
-    /* Modal */
-    .modal {
-      display: none;
-      position: fixed;
-      z-index: 1000;
-      left: 0;
-      top: 0;
-      width: 100%;
-      height: 100%;
-      overflow: auto;
-      background-color: rgba(0,0,0,0.4);
-    }
-
-    .modal-content {
-      background-color: #fff;
-      margin: 15% auto;
-      padding: 30px;
-      border-radius: 10px;
-      width: 90%;
-      max-width: 400px;
-      box-shadow: 0 10px 25px rgba(0,0,0,0.2);
-      text-align: center;
-    }
-
-    .modal-content h3 {
+    h2 {
       margin-bottom: 20px;
+      color: #333;
     }
-
-    .modal-content a {
-      display: block;
-      margin: 10px 0;
-      padding: 10px;
+    input[type="password"] {
+      width: 100%;
+      padding: 12px 10px;
+      margin-bottom: 20px;
+      border: 1.5px solid #ccc;
+      border-radius: 8px;
+      font-size: 1rem;
+    }
+    button {
+      width: 100%;
+      padding: 12px;
       background-color: #3182ce;
+      border: none;
       color: white;
-      border-radius: 5px;
-      text-decoration: none;
-      transition: background-color 0.2s;
+      font-size: 1.1rem;
+      border-radius: 8px;
+      cursor: pointer;
+      transition: background-color 0.3s ease;
     }
-
-    .modal-content a:hover {
+    button:hover {
       background-color: #2563eb;
     }
-
-    .close {
-      float: right;
-      font-size: 20px;
-      cursor: pointer;
-      color: #aaa;
+    .error {
+      color: #d33;
+      margin-top: 10px;
+      font-weight: 600;
     }
-
-    .close:hover {
-      color: #000;
-    }
-
   </style>
 </head>
 <body>
-
-  <nav class="navbar">
-    <div class="logo">
-      <img src="falogo.png" alt="lewygornylogo" />
-    </div>
-    <div class="nav-links">
-      <a href="#">Strona Główna</a>
-      <a href="kontakt.html">Kontakt</a>
-    </div>
-  </nav>
-
-  <section class="hero">
-    <h1>Witamy w Panelu Statystyk</h1>
-    <p>To narzędzie służy do monitorowania działań operacyjnych frakcji SAPD dla wydziału Federal Agents.</p>
-    <div class="buttons">
-      <a onclick="openModal()">Zobacz Wykresy</a>
-    </div>
-  </section>
-
-  <section class="info">
-    <h2>Co znajdziesz w panelu?</h2>
-    <p>
-Znajdziesz tu między innymi wykresy, które pozwalają na sprawdzenie swojej aktywności podczas różnych akcji, takich jak pościgi, obławy czy działania specjalne. System umożliwia również monitorowanie ogólnego udziału poszczególnych funkcjonariuszy na akcjach.    </p>
-  </section>
-
-  <!-- Modal -->
-  <div id="modal" class="modal">
-    <div class="modal-content">
-      <span class="close" onclick="closeModal()">&times;</span>
-      <h3>Wybierz kategorię wykresów:</h3>
-      <a href="typzatrzymania.html">Typy Zatrzymania</a>
-      <a href="dowodzacyakcja.html">Osoby dowodzące akcją</a>
-      <a href="uczestnicyakcji.html">Osoby biorące udział w akcji</a>
-      <a href="nicksporzadzajacegoraport.html">Nick sporządzającego raport</a>
-    </div>
+  <div class="login-container">
+    <h2>Wprowadź hasło</h2>
+    <input type="password" id="password" placeholder="Hasło" />
+    <button onclick="checkPassword()">Zaloguj</button>
+    <div class="error" id="errorMsg"></div>
   </div>
 
-  <footer>
-  ProjectRPG - Federal Bureau of Investigation &copy; 2025 
-  </footer>
-
   <script>
-    function openModal() {
-      document.getElementById('modal').style.display = 'block';
-    }
+    let correctPassword = null; // będzie pobrane z Sheets
 
-    function closeModal() {
-      document.getElementById('modal').style.display = 'none';
-    }
+    // Podmień na swój ID arkusza i nazwę arkusza (sheet)
+    const SHEET_ID = '1TxcOVV8AUFIA5wGrPD-19iKz0r-0fIroFF5OSTlvv1Q';
+    const SHEET_NAME = 'haslo';
 
-    // Zamknij modal, jeśli kliknięto poza nim
-    window.onclick = function(event) {
-      if (event.target == document.getElementById('modal')) {
-        closeModal();
+    // Funkcja do pobrania hasła z Google Sheets
+    async function fetchPassword() {
+      const url = `https://docs.google.com/spreadsheets/d/${SHEET_ID}/gviz/tq?tqx=out:json&sheet=${SHEET_NAME}`;
+      try {
+        const response = await fetch(url);
+        const text = await response.text();
+
+        // Google zwraca JSON w dziwnym opakowaniu, trzeba wyciągnąć czysty JSON
+        const json = JSON.parse(text.substring(text.indexOf('{'), text.lastIndexOf('}') + 1));
+
+        // Zakładam, że hasło jest w pierwszej komórce pierwszego wiersza
+        const row = json.table.rows[0];
+        const passwordFromSheet = row.c[0].v; // wartość komórki A1
+
+        correctPassword = passwordFromSheet;
+        console.log('Hasło pobrane z arkusza:', correctPassword);
+      } catch (error) {
+        console.error('Błąd pobierania hasła z arkusza:', error);
+        document.getElementById('errorMsg').textContent = 'Błąd połączenia z arkuszem, spróbuj później.';
       }
     }
-  </script>
 
+    // Wywołaj pobranie hasła przy starcie
+    fetchPassword();
+
+    function checkPassword() {
+      const entered = document.getElementById('password').value;
+      const errorDiv = document.getElementById('errorMsg');
+
+      if (correctPassword === null) {
+        errorDiv.textContent = 'Hasło nie jest jeszcze załadowane, poczekaj...';
+        return;
+      }
+
+      if(entered === correctPassword) {
+        window.location.href = "menubolo.html";
+      } else {
+        errorDiv.textContent = "Nieprawidłowe hasło, spróbuj ponownie.";
+      }
+    }
+
+    // Enter też zatwierdza
+    document.getElementById('password').addEventListener('keypress', function(e) {
+      if(e.key === 'Enter') {
+        checkPassword();
+      }
+    });
+  </script>
 </body>
 </html>
