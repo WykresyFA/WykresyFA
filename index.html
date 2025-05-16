@@ -2,97 +2,127 @@
 <html lang="pl">
 <head>
   <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <title>Logowanie</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Panel logowania</title>
+  <link rel="icon" href="falogo.png" type="image/png">
   <style>
     body {
-      background: #f4f6f8;
+      margin: 0;
+      padding: 0;
+      background: linear-gradient(to right, #1f2937, #2c5282);
       font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
       display: flex;
       justify-content: center;
       align-items: center;
       height: 100vh;
-      margin: 0;
-    }
-    .login-container {
-      background: white;
-      padding: 30px 40px;
-      border-radius: 12px;
-      box-shadow: 0 8px 20px rgba(0,0,0,0.1);
-      text-align: center;
-      width: 320px;
-    }
-    h2 {
-      margin-bottom: 20px;
       color: #333;
     }
+
+    .login-container {
+      background: #ffffff;
+      padding: 40px;
+      border-radius: 20px;
+      box-shadow: 0 15px 40px rgba(0, 0, 0, 0.2);
+      text-align: center;
+      width: 100%;
+      max-width: 400px;
+      animation: fadeIn 1s ease-in-out;
+      position: relative;
+    }
+
+    @keyframes fadeIn {
+      from { opacity: 0; transform: translateY(-30px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+
+    .login-container img.logo {
+      width: 100px;
+      margin-bottom: 20px;
+    }
+
+    h2 {
+      margin-bottom: 20px;
+      color: #2d3748;
+    }
+
     input[type="password"] {
       width: 100%;
-      padding: 12px 10px;
-      margin-bottom: 20px;
-      border: 1.5px solid #ccc;
-      border-radius: 8px;
+      padding: 14px;
+      margin: 15px 0;
+      border: 1.8px solid #ccc;
+      border-radius: 10px;
       font-size: 1rem;
+      transition: border 0.3s;
     }
+
+    input[type="password"]:focus {
+      border-color: #3182ce;
+      outline: none;
+    }
+
     button {
       width: 100%;
-      padding: 12px;
+      padding: 14px;
       background-color: #3182ce;
       border: none;
       color: white;
       font-size: 1.1rem;
-      border-radius: 8px;
+      border-radius: 10px;
       cursor: pointer;
       transition: background-color 0.3s ease;
     }
+
     button:hover {
       background-color: #2563eb;
     }
+
     .error {
-      color: #d33;
-      margin-top: 10px;
-      font-weight: 600;
+      color: #e53e3e;
+      font-weight: bold;
+      margin-top: 12px;
+    }
+
+    footer {
+      position: absolute;
+      bottom: 15px;
+      font-size: 0.9rem;
+      color: rgba(255, 255, 255, 0.5);
     }
   </style>
 </head>
 <body>
+
   <div class="login-container">
-    <h2>Wprowadź hasło</h2>
-    <input type="password" id="password" placeholder="Hasło" />
+    <img src="falogo.png" alt="Logo FA" class="logo">
+    <h2>Wprowadź hasło dostępu</h2>
+    <input type="password" id="password" placeholder="••••••••">
     <button onclick="checkPassword()">Zaloguj</button>
-    <div class="error" id="errorMsg"></div>
+    <div id="errorMsg" class="error"></div>
   </div>
 
-  <script>
-    let correctPassword = null; // będzie pobrane z Sheets
+  <footer>ProjectRPG - Federal Bureau of Investigation &copy; 2025</footer>
 
-    // Podmień na swój ID arkusza i nazwę arkusza (sheet)
+  <script>
+    let correctPassword = null;
+
     const SHEET_ID = '1TxcOVV8AUFIA5wGrPD-19iKz0r-0fIroFF5OSTlvv1Q';
     const SHEET_NAME = 'haslo';
 
-    // Funkcja do pobrania hasła z Google Sheets
     async function fetchPassword() {
       const url = `https://docs.google.com/spreadsheets/d/${SHEET_ID}/gviz/tq?tqx=out:json&sheet=${SHEET_NAME}`;
       try {
         const response = await fetch(url);
         const text = await response.text();
-
-        // Google zwraca JSON w dziwnym opakowaniu, trzeba wyciągnąć czysty JSON
         const json = JSON.parse(text.substring(text.indexOf('{'), text.lastIndexOf('}') + 1));
-
-        // Zakładam, że hasło jest w pierwszej komórce pierwszego wiersza
         const row = json.table.rows[0];
-        const passwordFromSheet = row.c[0].v; // wartość komórki A1
-
-        correctPassword = passwordFromSheet;
-        console.log('Hasło pobrane z arkusza:', correctPassword);
-      } catch (error) {
-        console.error('Błąd pobierania hasła z arkusza:', error);
-        document.getElementById('errorMsg').textContent = 'Błąd połączenia z arkuszem, spróbuj później.';
+        correctPassword = row.c[0].v;
+        console.log('Pobrane hasło:', correctPassword);
+      } catch (err) {
+        document.getElementById('errorMsg').textContent = 'Błąd połączenia z arkuszem.';
+        console.error(err);
       }
     }
 
-    // Wywołaj pobranie hasła przy starcie
     fetchPassword();
 
     function checkPassword() {
@@ -100,23 +130,23 @@
       const errorDiv = document.getElementById('errorMsg');
 
       if (correctPassword === null) {
-        errorDiv.textContent = 'Hasło nie jest jeszcze załadowane, poczekaj...';
+        errorDiv.textContent = 'Poczekaj, trwa ładowanie hasła...';
         return;
       }
 
-      if(entered === correctPassword) {
-        window.location.href = "menubolo.html";
+      if (entered === correctPassword) {
+        window.location.href = 'menubolo.html';
       } else {
-        errorDiv.textContent = "Nieprawidłowe hasło, spróbuj ponownie.";
+        errorDiv.textContent = 'Nieprawidłowe hasło.';
       }
     }
 
-    // Enter też zatwierdza
     document.getElementById('password').addEventListener('keypress', function(e) {
-      if(e.key === 'Enter') {
+      if (e.key === 'Enter') {
         checkPassword();
       }
     });
   </script>
+
 </body>
 </html>
