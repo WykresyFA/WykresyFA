@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-  <title>Logowanie</title>
+  <title>Logowanie | Panel FBI</title>
   <link rel="icon" href="falogo.png" type="image/png">
   <style>
     body {
@@ -36,7 +36,7 @@
     }
 
     .login-container img.logo {
-      width: 140px;
+      width: 100px;
       margin-bottom: 20px;
     }
 
@@ -94,56 +94,48 @@
 
   <div class="login-container">
     <img src="falogo.png" alt="Logo FA" class="logo">
-    <h2>Wprowadź hasło</h2>
+    <h2>Wprowadź hasło dostępu</h2>
     <input type="password" id="password" placeholder="••••••••">
     <button onclick="checkPassword()">Zaloguj</button>
     <div id="errorMsg" class="error"></div>
   </div>
 
-  <footer>ProjectRPG - Federal Bureau of Investigation &copy; 2025</footer>
+  <footer>ProjectRPG - FBI &copy; 2025</footer>
 
   <script>
-    const SHEET_ID = '1TxcOVV8AUFIA5wGrPD-19iKz0r-0fIroFF5OSTlvv1Q'; // <-- Twój arkusz
-    const SHEET_NAME = 'haslo';
-    let passwordHashFromSheet = null;
+    let correctPassword = null;
 
-    async function getPasswordFromSheet() {
+    const SHEET_ID = 'TU_WKLEJ_ID_ARKUSZA';
+    const SHEET_NAME = 'haslo';
+
+    async function fetchPassword() {
       const url = `https://docs.google.com/spreadsheets/d/${SHEET_ID}/gviz/tq?tqx=out:json&sheet=${SHEET_NAME}`;
       try {
         const response = await fetch(url);
         const text = await response.text();
         const json = JSON.parse(text.substring(text.indexOf('{'), text.lastIndexOf('}') + 1));
-        const value = json.table.rows[0].c[0].v;
-        passwordHashFromSheet = value.trim();
-        console.log('Pobrany hash:', passwordHashFromSheet);
-      } catch (error) {
-        document.getElementById('errorMsg').textContent = 'Błąd ładowania hasła z arkusza.';
-        console.error('Błąd:', error);
+        const row = json.table.rows[0];
+        correctPassword = row.c[0].v;
+        console.log('Pobrane hasło:', correctPassword);
+      } catch (err) {
+        document.getElementById('errorMsg').textContent = 'Błąd połączenia z arkuszem.';
+        console.error(err);
       }
     }
 
-    async function hash(text) {
-      const encoder = new TextEncoder();
-      const data = encoder.encode(text);
-      const hashBuffer = await crypto.subtle.digest('SHA-256', data);
-      const hashArray = Array.from(new Uint8Array(hashBuffer));
-      return hashArray.map(b => b.toString(16).padStart(2, '0')).join('');
-    }
+    fetchPassword();
 
-    async function checkPassword() {
+    function checkPassword() {
       const entered = document.getElementById('password').value;
       const errorDiv = document.getElementById('errorMsg');
 
-      if (!passwordHashFromSheet) {
-        errorDiv.textContent = 'Trwa ładowanie danych...';
+      if (correctPassword === null) {
+        errorDiv.textContent = 'Poczekaj, trwa ładowanie hasła...';
         return;
       }
 
-      const enteredHash = await hash(entered);
-
-      if (enteredHash === passwordHashFromSheet) {
-        const nextPage = atob('bWVudWJvbG8uaHRtbA=='); // menubolo.html
-        window.location.href = nextPage;
+      if (entered === correctPassword) {
+        window.location.href = 'menubolo.html';
       } else {
         errorDiv.textContent = 'Nieprawidłowe hasło.';
       }
@@ -154,8 +146,6 @@
         checkPassword();
       }
     });
-
-    getPasswordFromSheet();
   </script>
 
 </body>
