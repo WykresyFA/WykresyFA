@@ -2,9 +2,9 @@
 <html lang="pl">
 <head>
   <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
   <title>Kontakt - FA</title>
-  <link rel="icon" href="falogo.png" type="image/x-icon">
+  <link rel="icon" href="falogo.png" type="image/png">
   <style>
     * {
       margin: 0;
@@ -13,134 +13,157 @@
       font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
     }
 
-    html, body {
-      height: 100%;
-    }
-
     body {
+      background: linear-gradient(135deg, #1f2937, #2c5282);
+      color: #e2e8f0;
       display: flex;
       flex-direction: column;
-      background-color: #f4f6f8;
-      color: #1a202c;
+      min-height: 100vh;
     }
 
-    .navbar {
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-      background-color: #1f2937;
-      color: white;
-      padding: 15px 30px;
-    }
-
-    .navbar .logo {
-      display: flex;
-      align-items: center;
-    }
-
-    .navbar .logo img {
-      height: 50px;
-    }
-
-    .navbar .nav-links a {
-      margin-left: 20px;
-      color: white;
-      text-decoration: none;
-      font-weight: 500;
-      transition: color 0.3s;
-    }
-
-    .navbar .nav-links a:hover {
-      color: #60a5fa;
-    }
-
-    .hero {
+    header {
+      background-color: #2c5282;
+      padding: 20px 0;
       text-align: center;
-      padding: 80px 20px 40px;
-      background-color: #e2e8f0;
+      box-shadow: 0 4px 10px rgba(0,0,0,0.3);
+      position: relative;
     }
 
-    .hero h1 {
+    header img {
+      width: 140px;
+    }
+
+    .nav-links {
+      position: absolute;
+      top: 20px;
+      right: 30px;
+    }
+
+    .nav-links a {
+      text-decoration: none;
+      color: #e2e8f0;
+      background-color: rgba(255,255,255,0.1);
+      padding: 8px 16px;
+      border-radius: 8px;
+      font-weight: 600;
+      transition: background 0.3s ease, color 0.3s ease;
+    }
+
+    .nav-links a:hover {
+      background-color: rgba(255,255,255,0.2);
+      color: #fff;
+    }
+
+    main {
+      flex: 1;
+      padding: 40px 20px;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+    }
+
+    h1 {
       font-size: 2.5rem;
-      margin-bottom: 20px;
+      margin-bottom: 10px;
+      text-shadow: 0 2px 6px rgba(0,0,0,0.6);
     }
 
-    .hero p {
-      font-size: 1.2rem;
-      color: #4a5568;
-      max-width: 600px;
-      margin: 0 auto 30px;
+    p.description {
+      font-size: 1.1rem;
+      text-align: center;
+      max-width: 700px;
+      margin-bottom: 40px;
+      color: #cbd5e0;
     }
 
-    .info {
-      max-width: 1200px;
-      width: 90%;
-      margin: 60px auto;
-      padding: 30px;
-      background-color: white;
-      border-radius: 12px;
-      box-shadow: 0 4px 12px rgba(0,0,0,0.05);
-      flex-grow: 1;
+    .grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+      gap: 30px;
+      width: 100%;
+      max-width: 900px;
     }
 
-    .info h2 {
-      margin-bottom: 15px;
-      color: #2d3748;
+    .card {
+      background: #2d3748;
+      padding: 25px;
+      border-radius: 16px;
+      box-shadow: 0 6px 16px rgba(0,0,0,0.3);
     }
 
-    .info p {
-      color: #4a5568;
-      line-height: 1.6;
+    .section h2 {
+      margin-bottom: 12px;
+      font-size: 1.3rem;
+      padding-left: 10px;
+      border-left: 5px solid #63b3ed;
     }
 
+    .executive h2 { border-color: #e53e3e; }
+    .command h2 { border-color: #f56565; }
+    .dowodcy h2 { border-color: #4299e1; }
+    .technik h2 { border-color: #ecc94b; }
+
+    .card p {
+      font-size: 1rem;
+      line-height: 1.5;
+      margin-bottom: 6px;
+      padding-left: 10px;
+    }
     footer {
       text-align: center;
-      padding: 20px;
+      padding: 15px 0;
+      font-size: 0.9rem;
+      color: rgba(255, 255, 255, 0.4);
       background-color: #1f2937;
-      color: white;
-      margin-top: auto;
+      box-shadow: 0 -4px 8px rgba(0,0,0,0.3);
+      margin-top: 40px;
     }
   </style>
 </head>
 <body>
 
-  <nav class="navbar">
-    <div class="logo">
-      <img src="falogo.png" alt="lewygornylogo" />
+<header>
+  <img src="falogo.png" alt="Logo FA" />
+  <div class="nav-links">
+    <a href="lobby.html">Wróć do strony startowej</a>
+  </div>
+</header>
+
+<main>
+  <h1>Kontakt</h1>
+  <p class="description">
+  Jeśli na stronie pojawiają się problemy techniczne poniżej znajdują się informacje kontaktowe Discord.
+  </p>
+
+  <div class="grid">
+    <div class="card section executive">
+      <h2>Executive Staff</h2>
+      <p><strong>akiaura</strong> — x_namelessghoul_x</p>
+      <p><strong>slever</strong> — sleviii</p>
     </div>
-    <div class="nav-links">
-      <a href="menubolo.html">Strona Główna</a>
+
+    <div class="card section dowodcy">
+      <h2>Dowódcy</h2>
+      <p><strong>Themost</strong> — .themost</p>
+      <p><strong>Jakubexx</strong> — jakubexx2</p>
+      <p><strong>Martin*</strong> — harry0952</p>
     </div>
-  </nav>
 
-  <section class="hero">
-    <h1>Kontakt</h1>
-    <p>Jeśli na stronie pojawiają się problemy techniczne poniżej znajdują się informacje kontaktowe.</p>
-  </section>
+    <div class="card section command">
+      <h2>Command Staff</h2>
+      <p><strong>brak</strong> -</p>
+    </div>
 
-  <section class="info">
-    <h2 style="margin-top: 30px;color: rgb(105, 2, 2);">Executive Staff</h2>
-    <p><strong>Discord:</strong> akiaura - x_namelessghoul_x</p>
-    <p><strong>Discord:</strong> slever - sleviii</p>
+    <div class="card section technik">
+      <h2>Technik</h2>
+      <p><strong>PsiN0s</strong> — _psin0s_</p>
+    </div>
+  </div>
+</main>
 
-    <h2 style="margin-top: 30px; color:rgb(182, 5, 5);">Command Staff</h2>
-    <p><strong>Discord:</strong> -</p>
-
-    <h2 style="margin-top: 30px; color:rgb(2, 17, 151);">Dowódcy</h2>
-    <p><strong>Discord:</strong> Themost - .themost</p>
-    <p><strong>Discord:</strong> Jakubexx - jakubexx2</p>
-    <p><strong>Discord:</strong> Martin* - harry0952</p>
-
-    <h2 style="margin-top: 30px;color: rgb(196, 128, 4);">Technik</h2>
-    <p><strong>Discord:</strong> PsiN0s - _psin0s_</p>
-
-    <h2 style="margin-top: 30px;color: rgb(191, 98, 188);">Leniwi FA</h2>
-    <p><strong>Discord:</strong> PolisheQ - polisheq</p>
-  </section>
-
-  <footer>
-    ProjectRPG - Federal Bureau of Investigation &copy; 2025
-  </footer>
+<footer>
+  ProjectRPG - Federal Bureau of Investigation &copy; 2025
+</footer>
 
 </body>
 </html>
